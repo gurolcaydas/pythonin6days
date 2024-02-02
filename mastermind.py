@@ -4,9 +4,9 @@ import os
 import datetime
 import random
 
-sayiKumesi = "1234567890QWERTY"
+sayiKumesi = "12345678"
 kacKarakter = len(sayiKumesi)
-bulmacaHarfSayisi = 6
+bulmacaHarfSayisi = 4
 def temizle():
     # For Windows
     if (os.name == 'nt'):
