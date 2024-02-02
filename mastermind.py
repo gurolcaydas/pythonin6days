@@ -1,3 +1,5 @@
+# mastermind.py
+# Python 6 days challenge day #2
 import os
 import datetime
 import random
@@ -53,8 +55,8 @@ def ekraniYazdir():
 print("--------------------------------------------------------------------------------")
 print("--------------------------------------------------------------------------------")
 print (datetime.datetime.now().strftime("%d of %B"))
-username = input("\nİsminiz: ")
-mesaj= " Oyunumuza hoşgeldiniz, "+username+" "
+oyuncu = input("\nİsminiz: ")
+mesaj= " Oyunumuza hoşgeldiniz, "+oyuncu+" "
 uzunluk=int((80-len(mesaj))/2)
 ondeki="-"*uzunluk 
 arkadaki="-"*(uzunluk + len(mesaj) % 2)
@@ -93,7 +95,7 @@ while(True):
                 if yeriDogrular == 4:
                     print("--------------------------------------------------------------------------------")
                     print("--------------------------------------------------------------------------------")
-                    print("Tebrikler, bulmacayı {}. tahminde buldunuz".format(tahminSayisi))
+                    print("Tebrikler sevgili "+oyuncu+", bulmacayı {}. tahminde buldunuz".format(tahminSayisi))
                     print("--------------------------------------------------------------------------------")
                     print("--------------------------------------------------------------------------------")
                     print("Ama bir dakika?!")
