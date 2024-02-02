@@ -4,6 +4,9 @@ import os
 import datetime
 import random
 
+sayiKumesi = "1234567890QWERTY"
+kacKarakter = len(sayiKumesi)
+bulmacaHarfSayisi = 6
 def temizle():
     # For Windows
     if (os.name == 'nt'):
@@ -12,7 +15,7 @@ def temizle():
     else:
         os.system('clear')   
 def dorkBasamakli(numara):
-    if len(numara) != 4:
+    if len(numara) != bulmacaHarfSayisi:
         return False
     return True
 def farkliHarfler(numara):
@@ -22,14 +25,14 @@ def farkliHarfler(numara):
     return True
 def sifirBesArasi(numara):
     for x in numara:
-        if (x not in "123450"):
+        if (x not in sayiKumesi):
             return False
     return True
 def bulmaca(): 
-    sayiKumesi="012345"
+    #sayiKumesi="012345"
     gizli = ""
-    while (len(gizli) < 4):
-        siradaki=random.randrange(6)
+    while (len(gizli) < bulmacaHarfSayisi):
+        siradaki=random.randrange(kacKarakter)
         if (sayiKumesi[siradaki] not in gizli):
             gizli = sayiKumesi[siradaki] + gizli 
     return gizli
@@ -77,10 +80,10 @@ print("-------------------------------------------------------------------------
 print(ondeki+ mesaj +arkadaki)
 print("--------------------------------------------------------------------------------")
 print("--------------------------------------------------------------------------------")
-print("Senin için 4 basamaklı bir şifre tuttuk, tahmin edebilir misin?")
-print("Acemi Python programcısının eksikleri yüzünden bu 4 basamak renklerden değil rakamlardan oluşuyor.")
-print("Master Mind oyunun gereği olarak sadece 6 çeşit renk yani bu örnekte rakam kullandık")
-print("Yani 0-5 rakamlarıdan oluşan, birbirinin aynı rakamları içermeyen, 4 basamaklı bir sifre olacak")
+print("Senin için {} basamaklı bir şifre tuttuk, tahmin edebilir misin?".format(bulmacaHarfSayisi))
+print("Acemi Python programcısının eksikleri yüzünden bu {} basamak renklerden değil rakamlardan oluşuyor.".format(bulmacaHarfSayisi))
+print("Master Mind oyunun gereği olarak sadece {} çeşit renk yani bu örnekte rakam kullandık".format(len(sayiKumesi)))
+print("Yani "+sayiKumesi+" rakamlarıdan oluşan, birbirinin aynı rakamları içermeyen, {} basamaklı bir sifre olacak".format(bulmacaHarfSayisi))
 while(True):
     tahmin = input("\nTahmininizi giriniz:")
     if dorkBasamakli(tahmin):
@@ -92,7 +95,7 @@ while(True):
                 sonuclar.append("-"+format(olanlar)+" +"+format(yeriDogrular))
                 tahminler.append(tahmin)
                 ekraniYazdir()
-                if yeriDogrular == 4:
+                if yeriDogrular == bulmacaHarfSayisi:
                     print("--------------------------------------------------------------------------------")
                     print("--------------------------------------------------------------------------------")
                     print("Tebrikler sevgili "+oyuncu+", bulmacayı {}. tahminde buldunuz".format(tahminSayisi))
@@ -117,15 +120,15 @@ while(True):
 
             else:
                 degilSifirBes += 1
-                print("Lütfen 0-5 rakamları den olusan 4 basamakli bir sayi giriniz.")
+                print("Lütfen "+sayiKumesi+" rakamları den olusan {} basamakli bir sayi giriniz.".format(bulmacaHarfSayisi))
         else:
             degilRakamlarFarkli += 1
             print("Amaaaa lütfen rakamlar birbirinden farklı olsun.")
     else:
         degil4Basamak += 1
-        print("Lütfen 4 basamakli bir sayi giriniz")
+        print("Lütfen {} basamakli bir sayi giriniz".format(bulmacaHarfSayisi))
         if degil4Basamak>5:
-            print("Bu iş can sıkmaya başladı, 4 basamak nedir bilir misin?")
+            print("Bu iş can sıkmaya başladı, {} basamak nedir bilir misin?".format(bulmacaHarfSayisi))
 
 
 
