@@ -189,10 +189,17 @@ if __name__=='__main__':
     
     rekor_puan=0
     oyun_bitti=0
-    saga_git=1
-    alta_git=1
+    saga_git=0.8
+    alta_git=0.7
     sag_sol=1
     alt_ust=1
+    level = 1
+    
+    yandi = 0
+    bonus_var=0
+    bonus_y=45
+    bonus_x=60
+    
     
 
     LCD = LCD_1inch44()
@@ -202,16 +209,64 @@ if __name__=='__main__':
     LCD.show()
     
     def sifirla ():
-        global raket_x, raket_y, dusman_x, dusman_y, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en
+        global raket_x, raket_y, dusman_x, dusman_y, dusman_x2, dusman_y2, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, tuglalar1, tuglalar2, tuglalar3
         raket_en=12
         raket_x = 60
         raket_y = 110
         dusman_x = 60
         dusman_y = 45 
+        dusman_x2 = 60
+        dusman_y2 = 45 
         oyuna_devam=0
         kac_can_var = 3
         bu_oyun_puan = 0
+        yandi = 0
+        saga_git=0.8
+        alta_git=0.7
+        sag_sol=1
+        alt_ust=1
+        level = 1
+        tuglalar1 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+        tuglalar2 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+        tuglalar3 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
     
+        LCD.text('Bricks',50,14,WHITE)
+        LCD.show()
+        
+        LCD.text('Play->',70,110,WHITE)
+        LCD.show() 
+        while (key0.value() != 0):
+            calistir=1
+        LCD.fill_rect(4,10,120,120,BLACK)
+        
+        tuglalar_ciz()
+        LCD.text('Ready!',42,50,SKY)
+        LCD.show()
+        time.sleep(2)
+        LCD.fill_rect(4,10,120,120,BLACK)
+        
+    def can_kaybi ():
+        global raket_x, raket_y, dusman_x, dusman_y, dusman_x2, dusman_y2, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, level
+        raket_x = 60
+        raket_y = 110
+        dusman_x = 60
+        dusman_y = 45 
+        dusman_x2 = 60
+        dusman_y2 = 45 
+        oyuna_devam=0
+        yandi = 0
+        level=1
+        saga_git=0.7
+        alta_git=0.8
+        alt_ust=1
+        LCD.fill_rect(4,10,120,120,BLACK)
+        
+        tuglalar_ciz()
+        LCD.text('Ready!',42,50,SKY)
+        LCD.show()
+        time.sleep(2)
+        LCD.fill_rect(4,10,120,120,BLACK)
+                
     def raket_ciz(): 
         LCD.fill_rect(raket_x, raket_y , raket_en, 4, WHITE)  # Wings
 
@@ -222,53 +277,138 @@ if __name__=='__main__':
         return
     def topu_ciz():
         # Define colors
-        global sag_sol, alt_ust, dusman_x, dusman_y, saga_git
+        global sag_sol, alt_ust, dusman_x, dusman_y, dusman_x2, dusman_y2, saga_git, kac_can_var, yandi, alta_git
         
         
             
             
-        LCD.rect(dusman_x +1 , dusman_y , 2, 4, BLACK)
-        LCD.rect(dusman_x , dusman_y +1 , 4, 2, BLACK)
-        if (dusman_x>119):
+        #LCD.rect(dusman_x2 +1 , dusman_y2 , 2, 4, BLACK)
+        #LCD.rect(dusman_x2 , dusman_y2 +1 , 4, 2, BLACK)
+        if (dusman_x2>118):
             sag_sol=-1
-        if (dusman_x<5):
+        if (dusman_x2<6):
             sag_sol=+1
-        if (dusman_y>125):
-            alt_ust=-1
-        if (dusman_y<2):
+        if (dusman_y2>125):
+            #alt_ust=-1
+            kac_can_var = kac_can_var - 1
+            yandi=1
+        if (dusman_y2<3):
             alt_ust=+1
-        if (dusman_x>=raket_x -3 and dusman_x<= raket_x + raket_en +2 and raket_y <= dusman_y +2 and raket_y >= dusman_y +2 ):
+        if (dusman_x2>=raket_x -3 and dusman_x2<= raket_x + raket_en +1 and raket_y <= dusman_y2 +2  ):
             alt_ust=-1
-            LCD.fill_rect(4,4,120,120,BLACK)
-            LCD.text(str(raket_x)+' '+str(dusman_x),2,2,BLUE)
-            LCD.text(str(raket_y)+' '+str(dusman_y),2,12,BLUE)
-            if (dusman_x==raket_x -3):
-                saga_git = 2
-            if (dusman_x<= raket_x + raket_en +2 ):
-                saga_git = 1
-        dusman_x = dusman_x + saga_git * sag_sol
-        dusman_y = dusman_y + alta_git * alt_ust
-        LCD.rect(dusman_x +1 , dusman_y , 2, 4, BROWN)
-        LCD.rect(dusman_x , dusman_y +1 , 4, 2, YELLOW)
+            if (dusman_x2<raket_x + 3 and sag_sol == -1):
+                saga_git = 1.25
+                alta_git = 0.8
+            else:
+                saga_git = 1.1
+                alta_git = 1
+            if (dusman_x2 > raket_x + 4 and sag_sol == 1):
+                saga_git = 0.8
+                alta_git = 1.25
+        dusman_x = dusman_x + saga_git * sag_sol * level
+        dusman_y = dusman_y + alta_git * alt_ust * level
+        dusman_x2 = int(dusman_x)
+        dusman_y2 = int(dusman_y)
+        LCD.rect(dusman_x2 +1 , dusman_y2 , 2, 4, BROWN)
+        LCD.rect(dusman_x2 , dusman_y2 +1 , 4, 2, BROWN)
+        LCD.rect(dusman_x2 +1 , dusman_y2 +1 , 2, 2, YELLOW)
             
         
         return
 
-    def tuglalar_ciz():
-        global alt_ust
-        # Iterate over the tuglalar list
-        for tugla in tuglalar:
-            # Draw a rectangle for each element in tuglalar list
-            if (dusman_x>=tugla - 8 and dusman_x <= tugla and dusman_y <= 41 and dusman_y >= 36 ):
-                eksik_tugla(tugla)
-                alt_ust = alt_ust * (-1)
-            LCD.fill_rect(tugla - 6, 40, 9, 4, RED)
-
-    # Call the function to draw rectangles for each element in tuglalar list
-    def eksik_tugla(element):
-        if element in tuglalar:
-            tuglalar.remove(element)
+    def puan_yaz():
+        #LCD.fill_rect(4,1,120,10,BLACK)
+        LCD.text(str(kac_can_var),60,2,YELLOW)
+        LCD.text(str(bu_oyun_puan),6,2,BROWN)
+        LCD.text(str(rekor_puan),100,2,BLUE)
+        #LCD.text(str(saga_git),6,2,BROWN)
+        #LCD.text(str(alta_git),100,2,BLUE)
             
+    def tuglalar_ciz():
+        global alt_ust, dusman_x2, dusman_y2, bonus_var, bonus_y, bonus_x
+        # Iterate over the tuglalar list
+        for tugla in tuglalar1:
+            # Draw a rectangle for each element in tuglalar list
+            if (dusman_x2>=tugla - 8 and dusman_x2 <= tugla and dusman_y <= 41 and dusman_y >= 36 ):
+                eksik_tugla1(tugla)
+                alt_ust = alt_ust * (-1)
+                random_bonus=random.randint(0, 1)
+                if (bonus_var==0 and random_bonus==1):
+                    bonus_x = tugla - 5                    
+                    bonus_var=1
+                
+            LCD.fill_rect(tugla - 6, 40, 9, 4, RED)
+            
+        for tugla in tuglalar2:
+            # Draw a rectangle for each element in tuglalar list
+            if (dusman_x2>=tugla - 8 and dusman_x2 <= tugla and dusman_y <= 31 and dusman_y >= 26 ):
+                eksik_tugla2(tugla)
+                alt_ust = alt_ust * (-1)
+            LCD.fill_rect(tugla - 6, 30, 9, 4, BROWN)
+        
+        for tugla in tuglalar3:
+            # Draw a rectangle for each element in tuglalar list
+            if (dusman_x2>=tugla - 8 and dusman_x2 <= tugla and dusman_y <= 21 and dusman_y >= 16 ):
+                eksik_tugla3(tugla)
+                alt_ust = alt_ust * (-1)
+            LCD.fill_rect(tugla - 6, 20, 9, 4, SKY)
+        if ((len(tuglalar3) + len (tuglalar2) + len (tuglalar3))==0):
+            yeni_level()
+
+    def yeni_level():
+        global raket_x, raket_y, dusman_x, dusman_y, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, tuglalar1, tuglalar2, tuglalar3, level
+        raket_en=12
+        raket_x = 60
+        raket_y = 110
+        dusman_x = 60
+        dusman_y = 45 
+        dusman_x2 = 60
+        dusman_y2 = 45
+        level = 1
+        oyuna_devam=0
+        yandi = 0
+        tuglalar1 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+        tuglalar2 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+        tuglalar3 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+        LCD.fill_rect(4,10,120,120,BLACK)
+        tuglalar_ciz()
+        LCD.text('Ready!',42,50,SKY)
+        LCD.show()
+        time.sleep(2)
+        LCD.fill_rect(4,10,120,120,BLACK) 
+            
+    # Call the function to draw rectangles for each element in tuglalar list
+    def eksik_tugla1(element):
+        global bu_oyun_puan, level
+        level = level + 0.1
+        if element in tuglalar1:
+            tuglalar1.remove(element)
+            bu_oyun_puan=bu_oyun_puan + 10
+    def eksik_tugla2(element):
+        global bu_oyun_puan
+        if element in tuglalar2:
+            tuglalar2.remove(element)
+            bu_oyun_puan=bu_oyun_puan + 11
+    def eksik_tugla3(element):
+        global bu_oyun_puan
+        if element in tuglalar3:
+            tuglalar3.remove(element)
+            bu_oyun_puan=bu_oyun_puan + 12
+    def bonus_gelsin():
+        global bonus_var, bonus_x, bonus_y, bu_oyun_puan
+        if (bonus_x>=raket_x -8 and bonus_x<= raket_x + raket_en +1 and raket_y <= bonus_y +2  ):
+            bonus_var=0
+            bonus_y=45
+            bu_oyun_puan=bu_oyun_puan + 100
+        if(bonus_var==1):
+            bonus_y = bonus_y + 1
+            LCD.rect(bonus_x +1 , bonus_y , 6, 4, DARKBLUE)
+            LCD.rect(bonus_x , bonus_y +1 , 8, 2, SKY)
+        if(bonus_y>126):
+            bonus_var=0
+            bonus_y=45            
+            
+                        
 while True:
 
     LCD.fill_rect(0,0,127,127,BLACK)
@@ -280,10 +420,12 @@ while True:
     
 
     
-    limit_start = 1
-    limit_end = 115
-    step_size = 2
-    tuglalar = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+    limit_start = 4
+    limit_end = 112
+    step_size = 3
+    tuglalar1 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+    tuglalar2 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+    tuglalar3 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
     
    
     key0 = Pin(15,Pin.IN,Pin.PULL_UP) 
@@ -291,41 +433,41 @@ while True:
     key2 = Pin(2 ,Pin.IN,Pin.PULL_UP)
     key3 = Pin(3 ,Pin.IN,Pin.PULL_UP)
     sifirla()
+    
+
     while(1):
-        if (oyun_bitti>0):
+        
+        if (kac_can_var<0):
             if (rekor_puan<bu_oyun_puan):
                 rekor_puan=bu_oyun_puan
-            LCD.fill_rect(4,4,120,120,BLACK)
+            LCD.fill_rect(4,10,120,120,BLACK)
             LCD.text('Game Over.',20,20,YELLOW)
             LCD.text('Puan  :' + str(bu_oyun_puan),20,40,WHITE)
             LCD.text('Rekor :' + str(rekor_puan),20,60,BLUE)
-            bu_oyun_puan=0 
+            bu_oyun_puan=0
+            kac_can_var=3
             raket_x = 60
             raket_y = 110
             dusman_x = 60
             dusman_y = 45
+            dusman_x2 = 60
+            dusman_y2 = 45
+            tuglalar1 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+            tuglalar2 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
+            tuglalar3 = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110, 120]
             LCD.show()
             time.sleep(1)
-            LCD.text('Play ->',90,110,WHITE)
+            LCD.text('Play->',70,110,WHITE)
             LCD.show()
-            
-        else:
-
-            LCD.text('Bricks',50,4,WHITE)
-            LCD.show()
-            
-            LCD.text('Play ->',90,110,WHITE)
-            LCD.show() 
             while (key0.value() != 0):
                 calistir=1
-            LCD.fill_rect(4,4,120,120,BLACK) 
-            LCD.text('Ready!',42,50,SKY)
-            LCD.show()
-            time.sleep(2)
-            LCD.fill_rect(4,4,120,120,BLACK)
+             
 
+        puan_yaz()           
+        if (yandi>0):
+            can_kaybi()
        
-        while(1):
+        while(yandi<1):
             
             raket_sil()
             if(key0.value() == 0):
@@ -336,10 +478,13 @@ while True:
                 raket_x=raket_x- step_size
                 if (raket_x<limit_start):
                     raket_x=limit_start
-            LCD.fill_rect(4,4,120,120,BLACK)                    
+            LCD.fill_rect(4,1,120,127,BLACK)
+            puan_yaz()
             tuglalar_ciz()
             topu_ciz() 
             raket_ciz()
+            bonus_gelsin()
+            
                 
                   
             LCD.show()
