@@ -197,8 +197,11 @@ if __name__=='__main__':
     
     yandi = 0
     bonus_var=0
+    bonus_var_can=0
     bonus_y=45
     bonus_x=60
+    bonus_can_y = 35
+    bonus_can_x = 60
     
     
 
@@ -207,12 +210,16 @@ if __name__=='__main__':
     LCD.fill(BLACK)
      
     LCD.show()
-    
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
     def sifirla ():
         global raket_x, raket_y, dusman_x, dusman_y, dusman_x2, dusman_y2, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, tuglalar1, tuglalar2, tuglalar3
         raket_en=12
         raket_x = 60
-        raket_y = 110
+        raket_y = 120
         dusman_x = 60
         dusman_y = 45 
         dusman_x2 = 60
@@ -246,9 +253,9 @@ if __name__=='__main__':
         LCD.fill_rect(4,10,120,120,BLACK)
         
     def can_kaybi ():
-        global raket_x, raket_y, dusman_x, dusman_y, dusman_x2, dusman_y2, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, level
+        global raket_x, raket_y, dusman_x, dusman_y, dusman_x2, dusman_y2, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, level, bonus_var, bonus_var_can, saga_git, alta_git, alt_ust
         raket_x = 60
-        raket_y = 110
+        raket_y = 120
         dusman_x = 60
         dusman_y = 45 
         dusman_x2 = 60
@@ -259,6 +266,8 @@ if __name__=='__main__':
         saga_git=0.7
         alta_git=0.8
         alt_ust=1
+        bonus_var=0
+        bonus_var_can=0
         LCD.fill_rect(4,10,120,120,BLACK)
         
         tuglalar_ciz()
@@ -271,9 +280,11 @@ if __name__=='__main__':
         LCD.fill_rect(raket_x, raket_y , raket_en, 4, WHITE)  # Wings
 
         return    
-    def raket_sil(): 
-        LCD.fill_rect(raket_x, raket_y , raket_en, 4, BLACK)  # Wings
 
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
+    # ---------------------------------------------------------------------------------------------------------------------------
         return
     def topu_ciz():
         # Define colors
@@ -317,7 +328,7 @@ if __name__=='__main__':
         return
 
     def puan_yaz():
-        #LCD.fill_rect(4,1,120,10,BLACK)
+        LCD.fill_rect(4,1,120,10,BLACK)
         LCD.text(str(kac_can_var),60,2,YELLOW)
         LCD.text(str(bu_oyun_puan),6,2,BROWN)
         LCD.text(str(rekor_puan),100,2,BLUE)
@@ -325,7 +336,7 @@ if __name__=='__main__':
         #LCD.text(str(alta_git),100,2,BLUE)
             
     def tuglalar_ciz():
-        global alt_ust, dusman_x2, dusman_y2, bonus_var, bonus_y, bonus_x
+        global alt_ust, dusman_x2, dusman_y2, bonus_var, bonus_y, bonus_x, bonus_var_can, bonus_can_x, bonus_can_y
         # Iterate over the tuglalar list
         for tugla in tuglalar1:
             # Draw a rectangle for each element in tuglalar list
@@ -336,6 +347,7 @@ if __name__=='__main__':
                 if (bonus_var==0 and random_bonus==1):
                     bonus_x = tugla - 5                    
                     bonus_var=1
+                    bonus_y=45
                 
             LCD.fill_rect(tugla - 6, 40, 9, 4, RED)
             
@@ -344,6 +356,11 @@ if __name__=='__main__':
             if (dusman_x2>=tugla - 8 and dusman_x2 <= tugla and dusman_y <= 31 and dusman_y >= 26 ):
                 eksik_tugla2(tugla)
                 alt_ust = alt_ust * (-1)
+                random_bonus=random.randint(0, 1)
+                if (bonus_var_can==0 and random_bonus==1):
+                    bonus_can_x = tugla - 5                    
+                    bonus_var_can=1
+                    bonus_can_y=35  
             LCD.fill_rect(tugla - 6, 30, 9, 4, BROWN)
         
         for tugla in tuglalar3:
@@ -359,7 +376,7 @@ if __name__=='__main__':
         global raket_x, raket_y, dusman_x, dusman_y, oyuna_devam, kac_can_var, bu_oyun_puan, raket_en, yandi, tuglalar1, tuglalar2, tuglalar3, level
         raket_en=12
         raket_x = 60
-        raket_y = 110
+        raket_y = 120
         dusman_x = 60
         dusman_y = 45 
         dusman_x2 = 60
@@ -385,18 +402,22 @@ if __name__=='__main__':
             tuglalar1.remove(element)
             bu_oyun_puan=bu_oyun_puan + 10
     def eksik_tugla2(element):
-        global bu_oyun_puan
+        global bu_oyun_puan, level
+        level = level + 0.1
         if element in tuglalar2:
             tuglalar2.remove(element)
             bu_oyun_puan=bu_oyun_puan + 11
     def eksik_tugla3(element):
-        global bu_oyun_puan
+        global bu_oyun_puan , level
+        level = level + 0.1
         if element in tuglalar3:
             tuglalar3.remove(element)
             bu_oyun_puan=bu_oyun_puan + 12
     def bonus_gelsin():
         global bonus_var, bonus_x, bonus_y, bu_oyun_puan
         if (bonus_x>=raket_x -8 and bonus_x<= raket_x + raket_en +1 and raket_y <= bonus_y +2  ):
+            LCD.rect(bonus_x -1 , bonus_y , 10, 4, DARKBLUE)
+            LCD.rect(bonus_x , bonus_y -1 , 8, 4, SKY)
             bonus_var=0
             bonus_y=45
             bu_oyun_puan=bu_oyun_puan + 100
@@ -407,6 +428,21 @@ if __name__=='__main__':
         if(bonus_y>126):
             bonus_var=0
             bonus_y=45            
+    def bonus_gelsin_can():
+        global bonus_var_can, bonus_can_x, bonus_can_y, kac_can_var
+        if (bonus_can_x>=raket_x -8 and bonus_can_x<= raket_x + raket_en +1 and raket_y <= bonus_can_y +2  ):
+            LCD.rect(bonus_can_x -1 , bonus_can_y , 10, 5, GREEN)
+            LCD.rect(bonus_can_x , bonus_can_y -1 , 8, 6, YELLOW)
+            bonus_var_can=0
+            bonus_can_y=35
+            kac_can_var=kac_can_var + 1
+        if(bonus_var_can==1):
+            bonus_can_y = bonus_can_y + 1
+            LCD.rect(bonus_can_x +1 , bonus_can_y , 6, 4, GREEN)
+            LCD.rect(bonus_can_x , bonus_can_y +1 , 8, 2, YELLOW)
+        if(bonus_can_y>126):
+            bonus_var_can=0
+            bonus_can_y=35            
             
                         
 while True:
@@ -447,7 +483,7 @@ while True:
             bu_oyun_puan=0
             kac_can_var=3
             raket_x = 60
-            raket_y = 110
+            raket_y = 120
             dusman_x = 60
             dusman_y = 45
             dusman_x2 = 60
@@ -469,7 +505,6 @@ while True:
        
         while(yandi<1):
             
-            raket_sil()
             if(key0.value() == 0):
                 raket_x=raket_x + step_size
                 if (raket_x>limit_end):
@@ -484,6 +519,7 @@ while True:
             topu_ciz() 
             raket_ciz()
             bonus_gelsin()
+            bonus_gelsin_can()
             
                 
                   
